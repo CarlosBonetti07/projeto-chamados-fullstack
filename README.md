@@ -51,27 +51,25 @@ O sistema é composto por um backend robusto em Java com Spring e um frontend di
   
   ### Backend (Java + Spring Boot)
   
-  ```bash
-  # Navegue até a pasta do backend
-  cd backend
-  
-  # Configure o application.properties com as credenciais do banco MySQL
-  
-  # Compile e rode o projeto
-  ./mvnw spring-boot:run
+    # Navegue até a pasta do backend
+    cd backend
+    
+    # Configure o application.properties com as credenciais do banco MySQL
+    
+    # Compile e rode o projeto
+    ./mvnw spring-boot:run
 
 
 
   ## ▶️ Como executar o Frontend
   
-  ```bash
-  # Navegue até a pasta do frontend
-  cd frontend
+    # Navegue até a pasta do frontend
+    cd frontend
+    
+    # Instale as dependências
+    npm install
   
-  # Instale as dependências
-  npm install
-
-# Rode a aplicação
-ng serve
+    # Rode a aplicação
+    ng serve
 
 
