@@ -51,7 +51,7 @@ O sistema é composto por um backend robusto em Java com Spring e um frontend di
   
   ### Backend (Java + Spring Boot)
   
-  bash
+  ```bash
   # Navegue até a pasta do backend
   cd backend
   
@@ -64,7 +64,7 @@ O sistema é composto por um backend robusto em Java com Spring e um frontend di
 
   ## ▶️ Como executar o Frontend
   
-  bash
+  ```bash
   # Navegue até a pasta do frontend
   cd frontend
   
