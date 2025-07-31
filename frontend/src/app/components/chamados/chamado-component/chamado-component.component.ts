@@ -37,11 +37,6 @@ export class ChamadoComponent implements OnInit {
     this.listarChamados();
     this.listarAnalistas();
     
-/*
-    if (!this.chamado.analista) {
-      this.chamado.analista = { id: 0, nome: '', fotoBase64: '' };
-    }
-*/
   }
 
   getNovoChamado(): Chamado {
@@ -122,12 +117,7 @@ export class ChamadoComponent implements OnInit {
   listarAnalistas() {
     this.analistaService.listar().subscribe(data => this.analistas = data);
   }
-/*
-  get filteredAnalistas() {
-    const term = this.search.toLowerCase();
-    return this.analistas.filter(a => a.nome.toLowerCase().includes(term));
-  }
-*/
+
   onFocus() {
     this.showDropdown = true;
     this.filterAnalistas();
@@ -162,9 +152,8 @@ export class ChamadoComponent implements OnInit {
   }
   // Fazer carregar da base de dados
   // Configurações do Azure Workitem Autocomplete
-  public org = 'Datainfo-LABS-Epagri';
-  public project = 'Gestão Epagri';
-  public pat = '2EKCtMdI2WPwdKD1Mu2bW1GyHsrSmhkqXL3r7KVHKKfxTYG5CwuCJQQJ99BGACAAAAAs50ayAAASAZDO38xT'; // Personal Access Token
+  public org = 'org';
+  public project = 'project';
 
 
   // Parte responsável por controlar o componente de Branches:

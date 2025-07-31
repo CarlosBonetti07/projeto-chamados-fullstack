@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "SoundCloud": {
+    "Chamados": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "SoundCloud:build:production"
+              "buildTarget": "Chamados:build:production"
             },
             "development": {
-              "buildTarget": "SoundCloud:build:development"
+              "buildTarget": "Chamados:build:development"
             }
           },
           "defaultConfiguration": "development"

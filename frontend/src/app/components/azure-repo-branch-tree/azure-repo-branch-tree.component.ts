@@ -41,10 +41,9 @@ export class AzureRepoBranchTreeComponent implements OnInit {
   filterBranch = '';
   loading = false;
 
-  public org = 'Datainfo-LABS-Epagri';
-  public project = 'Gestão Epagri';
-  public pat = '2EKCtMdI2WPwdKD1Mu2bW1GyHsrSmhkqXL3r7KVHKKfxTYG5CwuCJQQJ99BGACAAAAAs50ayAAASAZDO38xT'; // Personal Access Token
-  public repo = 'SAFIWEB - Geral'; // Nome do repositório
+  public org = 'org';
+  public project = 'project';
+  public repo = 'repo - Geral'; // Nome do repositório
 
   constructor(
     private azureService: AzureDevOpsService,
@@ -52,7 +51,7 @@ export class AzureRepoBranchTreeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.azureService.setCredentials(this.org, '', this.pat);
+    this.azureService.setCredentials(this.org, '', '');
     this.loadAllData();
   }
 

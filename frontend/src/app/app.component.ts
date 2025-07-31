@@ -10,5 +10,5 @@ import { GlobalAlertComponent } from './components/global-alert.component/global
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'SoundCloud';
+  title = 'Chamados';
 }
