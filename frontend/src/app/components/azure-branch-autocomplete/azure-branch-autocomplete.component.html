@@ -1,0 +1,34 @@
+<div class="mb-3 position-relative">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Digite o nome da branch"
+    [formControl]="inputControl"
+    (focus)="showSuggestions = true"
+    (blur)="hideSuggestionsWithDelay()"
+  />
+
+  <ul
+    class="list-group position-absolute w-100 z-3"
+    *ngIf="showSuggestions && suggestions.length > 0"
+    style="max-height: 200px; overflow-y: auto;"
+  >
+    <li
+      class="list-group-item d-flex align-items-center"
+      *ngFor="let branch of suggestions"
+      (mousedown)="onOptionSelected(branch)"
+      style="cursor: pointer;"
+    >
+      <span class="me-2" [style.color]="getColor()">{{ getIcon() }}</span>
+
+      <a
+        [href]="getBranchUrl(branch)"
+        target="_blank"
+        class="me-2 text-decoration-none flex-grow-1 text-truncate"
+        [title]="branch"
+      >
+        {{ branch }}
+      </a>
+    </li>
+  </ul>
+</div>

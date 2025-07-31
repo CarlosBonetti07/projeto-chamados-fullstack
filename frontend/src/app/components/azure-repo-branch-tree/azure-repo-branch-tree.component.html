@@ -1,0 +1,109 @@
+<div class="p-3 border rounded shadow-sm" style="border: 2px solid #dee2e6; background-color: #fff;">
+  <!-- Top Bar -->
+  <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+    <!-- Filtros compactos -->
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <input
+        type="text"
+        placeholder="Filtrar projetos..."
+        class="form-control form-control-sm"
+        [(ngModel)]="filterProject"
+        style="width: 160px;"
+      />
+      <input
+        type="text"
+        placeholder="Filtrar branches..."
+        class="form-control form-control-sm"
+        [(ngModel)]="filterBranch"
+        style="width: 160px;"
+      />
+    </div>
+
+    <!-- Botões compactos -->
+    <div class="d-flex gap-2 align-items-center">
+      <button
+        class="btn btn-sm btn-outline-primary"
+        (click)="loadAllData()"
+        [disabled]="loading"
+        title="Atualizar"
+      >
+        🔄
+      </button>
+      <button
+        class="btn btn-sm btn-outline-secondary"
+        (click)="expandAll()"
+        title="Expandir tudo"
+      >
+        ⬇️
+      </button>
+      <button
+        class="btn btn-sm btn-outline-secondary"
+        (click)="collapseAll()"
+        title="Minimizar tudo"
+      >
+        ⬆️
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Projetos e branches -->
+    <div class="col-6">
+      <div class="card shadow-sm">
+        <div class="card-header fw-bold py-2 px-3">Projetos e Branches</div>
+        <div class="card-body p-2" style="max-height: 500px; overflow-y: auto; height: 500px;">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let project of filteredProjects()">
+              <span role="button" (click)="toggleProject(project.name)">
+                {{ isProjectExpanded(project.name) ? '📂' : '📁' }} {{ project.name }}
+              </span>
+
+              <ul class="list-group ms-3 mt-2" *ngIf="isProjectExpanded(project.name)">
+                <li class="list-group-item" *ngFor="let repo of filteredRepos(project.name)">
+                  <span role="button" (click)="toggleRepo(project.name, repo.name)">
+                    {{ isRepoExpanded(project.name, repo.name) ? '📂' : '📁' }} {{ repo.name }}
+                  </span>
+
+                  <ul class="list-group ms-3 mt-2" *ngIf="isRepoExpanded(project.name, repo.name)">
+                    <li
+                      class="list-group-item"
+                      *ngFor="let branch of filteredBranches(project.name, repo.name)"
+                      (click)="selectBranch(project.name, repo.name, branch)"
+                      style="cursor: pointer"
+                    >
+                      🌿 {{ branch }}
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selecionadas -->
+    <div class="col-6">
+      <div class="card shadow-sm">
+        <div class="card-header fw-bold py-2 px-3">Branches selecionadas</div>
+        <div class="card-body p-2" style="max-height: 500px; overflow-y: auto; height: 500px;">
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let selected of listaSelecionados"
+            >
+              ✅ {{ selected.branchName }}
+              <button
+                class="btn btn-sm btn-outline-danger"
+                (click)="removeBranch(selected)"
+                title="Remover"
+              >
+                🗑️
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

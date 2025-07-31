@@ -1,0 +1,211 @@
+<div class="container mt-4">
+  <h3>Cadastro de Chamados</h3>
+
+<!-- Formulário -->
+<form (ngSubmit)="salvarOuAtualizar()" #formChamado="ngForm">
+  <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Título</label>
+        <input type="text" class="form-control" [(ngModel)]="chamado.titulo" name="titulo" />
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Analista</label>
+
+        <div class="position-relative">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Digite para buscar..."
+            [(ngModel)]="search"
+            (focus)="onFocus()"
+            (blur)="onBlur()"
+            name="search"
+            (input)="onSearchChange()"
+            autocomplete="off"
+          />
+
+          <ul
+            *ngIf="showDropdown && filteredAnalistas.length > 0"
+            class="list-group position-absolute w-100"
+            style="z-index: 1000;"
+          >
+            <li
+              class="list-group-item list-group-item-action d-flex align-items-center"
+              *ngFor="let analista of filteredAnalistas"
+              (mousedown)="select(analista)"
+              style="cursor: pointer;"
+            >
+              <img
+                *ngIf="analista.fotoBase64"
+                [src]="'data:image/jpeg;base64,' + analista.fotoBase64"
+                alt="Foto"
+                class="me-2 rounded-circle"
+                style="width: 30px; height: 30px; object-fit: cover"
+              />
+              {{ analista.nome }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Estado</label>
+        <select class="form-select" [(ngModel)]="chamado.estado" name="estado">
+          <option value="DESENVOLVIMENTO">Desenvolvimento</option>
+          <option value="HOMOLOGACAO">Homologação</option>
+          <option value="PRODUCAO">Produção</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Status</label>
+        <select class="form-select" [(ngModel)]="chamado.status" name="status">
+          <option value="ABERTO">Aberto</option>
+          <option value="EM_ANDAMENTO">Em andamento</option>
+          <option value="FINALIZADO">Finalizado</option>
+          <option value="CANCELADO">Cancelado</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Tipo</label>
+        <select class="form-select" [(ngModel)]="chamado.tipo" name="tipo">
+          <option value="BUG">Bug</option>
+          <option value="MELHORIA">Melhoria</option>
+          <option value="TAREFA">Tarefa</option>
+        </select>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Prioridade</label>
+        <select class="form-select" [(ngModel)]="chamado.prioridade" name="prioridade">
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Média</option>
+          <option value="BAIXA">Baixa</option>
+        </select>
+      </div>
+
+    <div class="col-md-8 mb-3">
+      <label class="form-label">Card</label>
+
+    <app-azure-workitem-autocomplete
+      [(ngModel)]="chamado.branch"
+      [org]="org"
+      [project]="project"
+      [pat]="pat"
+      (itemSelected)="onItemSelected($event)"
+      name="branch">
+    </app-azure-workitem-autocomplete>
+
+
+
+      <!-- <input type="text" class="form-control" [(ngModel)]="chamado.titulo" name="titulo" required /> -->
+    </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Link Azure</label>
+        <input type="text" class="form-control" [(ngModel)]="chamado.linkAzure" name="linkAzure" />
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <label class="form-label">Descrição</label>
+        <textarea class="form-control" [(ngModel)]="chamado.descricao" name="descricao"></textarea>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+      <button type="submit" class="btn btn-success">
+         <i class="bi-check-lg"></i> {{ editando ? 'Atualizar' : 'Salvar' }}
+      </button>
+      
+      <button type="button" class="btn btn-danger" (click)="resetarFormulario()">
+        <i class="bi bi-arrow-repeat"></i> Limpar
+      </button>
+    </div>
+
+  </form>
+
+
+
+
+
+
+  <!-- Exibir branches selecionadas -->
+<p>
+  <button 
+    class="btn btn-link p-0 d-flex align-items-center gap-1" 
+    type="button" 
+    (click)="isCollapsed = !isCollapsed" 
+    [attr.aria-expanded]="!isCollapsed" 
+    aria-controls="collapseExample"
+  >
+    Cadastrar Branchs
+    <i class="bi" [ngClass]="isCollapsed ? 'bi-caret-right-fill' : 'bi-caret-down-fill'"></i>
+  </button>
+</p>
+
+<div [hidden]="isCollapsed" class="mt-2" id="collapseExample">
+  <app-azure-repo-branch-tree
+    [chamadoId]="idChamadoAtual"
+    [listaSelecionados]="branchesSelecionadas"
+    (listaSelecionadosChange)="branchesSelecionadas = $event">
+  </app-azure-repo-branch-tree>
+</div>
+<!-- Fim Exibir branches selecionadas -->
+
+
+
+
+
+
+
+  <!-- Lista -->
+  <hr />
+  <h4 class="mt-4">Chamados Cadastrados</h4>
+  <table class="table table-bordered table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Analista</th>
+        <th>Estado</th>
+        <th>Status</th>
+        <th>Link</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of chamados">
+        <td>{{ c.titulo }}</td>
+        <td>
+            <img
+              *ngIf="c.analista?.fotoBase64"
+              [src]="'data:image/jpeg;base64,' + c.analista?.fotoBase64"
+              alt="Foto"
+              class="me-2 rounded-circle"
+              style="width: 30px; height: 30px; object-fit: cover"
+            />
+          {{ c.analista?.nome }}
+        </td>
+        <td>{{ c.estado }}</td>
+        <td>{{ c.status }}</td>
+        <td><a [href]="c.linkAzure" target="_blank">Azure</a></td>
+        <td>
+          <button class="btn btn-outline-primary btn-sm me-2" (click)="editarChamado(c)">
+             <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-danger btn-sm" (click)="removerChamado(c.id!)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex">
+    <button type="button" class="btn btn-secondary ms-auto" (click)="listarChamados()">
+      <i class="bi bi-arrow-repeat"></i> Refresh
+    </button>
+  </div>
+</div>

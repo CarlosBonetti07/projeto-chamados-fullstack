@@ -1,0 +1,37 @@
+<mat-form-field class="w-100">
+  <input
+    matInput
+    placeholder="Digite #123"
+    [formControl]="inputControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="displayFn.bind(this)"
+    (optionSelected)="onOptionSelected($event.option.value)"
+  >
+    <mat-option *ngFor="let item of suggestions$ | async" [value]="item">
+      <div class="option-container">
+        <span
+          class="icon"
+          [ngStyle]="{ color: getColor(item.fields['System.WorkItemType']) }"
+        >
+          {{ getIcon(item.fields['System.WorkItemType']) }}
+        </span>
+        <span class="type">
+          <a
+            [href]="'https://dev.azure.com/' + org + '/' + project + '/_workitems/edit/' + item.id"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+          >
+            {{ item.fields['System.WorkItemType'] }} {{ item.id }}:
+          </a>
+        </span>
+        <span class="title" [title]="item.fields['System.Title']">
+          {{ item.fields['System.Title'] }}
+        </span>
+      </div>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

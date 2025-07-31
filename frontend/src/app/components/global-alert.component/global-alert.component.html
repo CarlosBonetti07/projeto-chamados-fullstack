@@ -1,0 +1,8 @@
+<div class="alert-container">
+  <div *ngFor="let alerta of alertas; let i = index"
+       class="alert alert-{{alerta.tipo}} alert-dismissible fade show"
+       role="alert">
+    {{ alerta.mensagem }}
+    <button type="button" class="btn-close" (click)="fechar(i)"></button>
+  </div>
+</div>
